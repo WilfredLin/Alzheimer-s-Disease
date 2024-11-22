@@ -1,0 +1,29 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+
+# Load dataset
+# Assume we have a CSV file with symptoms and diagnosis
+# The CSV file should have columns like: ['memory_loss', 'difficulty_concentrating', 'confusion', 'personality_changes', 'language_problems', 'diagnosis']
+data = pd.read_csv('alzheimers_data.csv')
+
+# Preprocess the data
+X = data.drop('diagnosis', axis=1)  # Features (symptoms)
+Y = data['diagnosis']  # Target (diagnosis)
+
+# Split the dataset into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Initialize the model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Train the model
+model.fit(X_train, Y_train)
+
+# Make predictions
+predictions = model.predict(X_test)
+
+# Evaluate the model
+print(classification_report(Y_test, predictions))
+print('Accuracy:', accuracy_score(Y_test, predictions))
